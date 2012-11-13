@@ -1,0 +1,47 @@
+type api_error = {
+  message: string;
+  kind <json name="type">: string;
+  code: int;
+}
+
+type error = {
+  error: api_error;
+}
+
+type graph_object = {
+  id: string;
+  name: string;
+}
+
+type picture_data = {
+  url: string;
+  is_silhouette: bool;
+}
+
+type picture = {
+  data: picture_data;
+}
+
+type user = {
+  id: string;
+  ?name: string option;
+  ?first_name: string option;
+  ?middle_name: string option;
+  ?last_name: string option;
+  ?gender: string option;
+  ?locale: string option;
+  ?link: string option;
+  ?username: string option;
+  ?installed: bool option;
+  ?timezone: int option;
+  ?updated_time: string option;
+  ?verified: bool option;
+  ?bio: string option;
+  ?birthday: string option;
+  ?email: string option;
+  ?location: graph_object option;
+  ?political: string option;
+  ?picture: picture option;
+  ?quotes: string option;
+  ?religion: string option;
+} <ocaml field_prefix="user_">

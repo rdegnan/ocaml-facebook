@@ -1,0 +1,14 @@
+OASISFormat: 0.3
+Name:        facebook
+Version:     0.1
+Synopsis:    Facebook Graph API client in OCaml
+Authors:     Ryland Degnan
+License:     BSD3
+Plugins:     META (0.3), DevFiles (0.3)
+BuildTools: ocamlbuild
+
+Library facebook
+  Path: src
+  Findlibname: facebook
+  Modules: Facebook, Facebook_j, Facebook_t
+  BuildDepends: lwt.syntax, cohttp, uri (>= 1.3.3), cohttp.lwt (>= 0.9.1), yojson, atdgen

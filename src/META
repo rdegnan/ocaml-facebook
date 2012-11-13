@@ -1,0 +1,11 @@
+# OASIS_START
+# DO NOT EDIT (digest: 02dec8bb9b24017c79867a229007ace2)
+version = "0.1"
+description = "Facebook Graph API client in OCaml"
+requires = "lwt.syntax cohttp uri cohttp.lwt yojson atdgen"
+archive(byte) = "facebook.cma"
+archive(byte, plugin) = "facebook.cma"
+archive(native) = "facebook.cmxa"
+archive(native, plugin) = "facebook.cmxs"
+exists_if = "facebook.cma"
+# OASIS_STOP
