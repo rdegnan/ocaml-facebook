@@ -42,6 +42,11 @@ type user = Facebook_t.user = {
   user_religion (*atd religion *): string option
 }
 
+type og_object = Facebook_t.og_object = {
+  og_id (*atd id *): string;
+  og_photos (*atd photos *): string list
+}
+
 val write_api_error :
   Bi_outbuf.t -> api_error -> unit
   (** Output a JSON value of type {!api_error}. *)
@@ -161,4 +166,24 @@ val read_user :
 val user_of_string :
   string -> user
   (** Deserialize JSON data of type {!user}. *)
+
+val write_og_object :
+  Bi_outbuf.t -> og_object -> unit
+  (** Output a JSON value of type {!og_object}. *)
+
+val string_of_og_object :
+  ?len:int -> og_object -> string
+  (** Serialize a value of type {!og_object}
+      into a JSON string.
+      @param len specifies the initial length
+                 of the buffer used internally.
+                 Default: 1024. *)
+
+val read_og_object :
+  Yojson.Safe.lexer_state -> Lexing.lexbuf -> og_object
+  (** Input JSON data of type {!og_object}. *)
+
+val og_object_of_string :
+  string -> og_object
+  (** Deserialize JSON data of type {!og_object}. *)
 

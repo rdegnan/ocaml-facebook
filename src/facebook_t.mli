@@ -34,3 +34,8 @@ type user = {
   user_quotes (*atd quotes *): string option;
   user_religion (*atd religion *): string option
 }
+
+type og_object = {
+  og_id (*atd id *): string;
+  og_photos (*atd photos *): string list
+}

@@ -10,6 +10,9 @@ module URI = struct
 
   let user ?(id="me") () =
     Uri.of_string (sprintf "https://graph.facebook.com/%s" id)
+
+  let opengraph ?(id="me") ?(namespace="og") ~action () =
+    Uri.of_string (sprintf "https://graph.facebook.com/%s/%s:%s" id namespace action)
 end
 
 module C = Cohttp
@@ -115,5 +118,11 @@ module User = struct
   let get ?token ?id ?(fields=[]) () =
     let uri = URI.user ?id () in
     let params = ["fields", String.concat "," fields] in
-    API.get ?token ~uri ~params (fun b -> return (Facebook_j.user_of_string b))
+    API.get ?token ~uri ~params (wrap1 Facebook_j.user_of_string)
+end
+
+module OpenGraph = struct
+  let get ?token ?id ?namespace ~action ?(params=[]) () =
+    let uri = URI.opengraph ?id ?namespace ~action () in
+    API.get ?token ~uri ~params (wrap1 Facebook_j.og_object_of_string)
 end

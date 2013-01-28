@@ -45,3 +45,8 @@ type user = {
   ?quotes: string option;
   ?religion: string option;
 } <ocaml field_prefix="user_">
+
+type og_object = {
+  id: string;
+  ~photos: string list;
+} <ocaml field_prefix="og_">

@@ -57,5 +57,16 @@ end
 module User : sig
   val get:
     ?token:Token.t ->
-    ?id:string -> ?fields:string list -> unit -> Facebook_t.user Monad.t
+    ?id:string -> ?fields:string list ->
+    unit -> Facebook_t.user Monad.t
+end
+
+module OpenGraph : sig
+  val get:
+    ?token:Token.t ->
+    ?id:string ->
+    ?namespace:string ->
+    action:string ->
+    ?params:(string * string) list ->
+    unit -> Facebook_t.og_object Monad.t
 end
