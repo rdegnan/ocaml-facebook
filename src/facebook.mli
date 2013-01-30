@@ -34,7 +34,8 @@ module API : sig
     ?headers:Cohttp.Header.t ->
     ?body:string ->
     ?token:Token.t ->
-    expected_code:Cohttp.Code.status_code ->
+    ?params:(string * string) list ->
+    ?expected_code:Cohttp.Code.status_code ->
     uri:Uri.t ->
     (string -> 'a Lwt.t) -> 'a Monad.t
 
@@ -47,13 +48,6 @@ module API : sig
     (string -> 'a Lwt.t) -> 'a Monad.t
 end
 
-(* Various useful URI generation functions, normally for displaying on a web-page.
- * The [authorize] function is the entry URL for your users, and the [token] URI
- * is the URI used to convert the result into a concrete access token *)
-module URI : sig
-  val token : client_id:string -> client_secret:string -> unit -> Uri.t
-end
-
 module User : sig
   val get:
     ?token:Token.t ->
@@ -62,7 +56,7 @@ module User : sig
 end
 
 module OpenGraph : sig
-  val get:
+  val post:
     ?token:Token.t ->
     ?id:string ->
     ?namespace:string ->

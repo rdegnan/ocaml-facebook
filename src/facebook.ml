@@ -2,6 +2,9 @@ open Lwt
 open Printf
 open Facebook_t
 
+(* Various useful URI generation functions, normally for displaying on a web-page.
+ * The [authorize] function is the entry URL for your users, and the [token] URI
+ * is the URI used to convert the result into a concrete access token *)
 module URI = struct
   let token ~client_id ~client_secret () =
     let uri = Uri.of_string "https://graph.facebook.com/oauth/access_token" in
@@ -78,18 +81,18 @@ module API = struct
             with _ -> return (Monad.(Error (Generic res)))
 
   (* Convert a request body into a stream and force chunked-encoding *)
-  let request_with_token_body ?headers ?token ?body ~expected_code uri req resp =
+  let request_with_token_body ?headers ?token ?body ?params ~expected_code uri req resp =
     let body = match body with
       | None -> None
       | Some b -> CLB.body_of_string b in
     let chunked = Some false in
-    request_with_token ?headers ?token ~expected_code uri (req ?body ?chunked) resp
+    request_with_token ?headers ?token ?params ~expected_code uri (req ?body ?chunked) resp
 
   let get ?headers ?token ?(params=[]) ?(expected_code=`OK) ~uri fn =
     request_with_token ?headers ?token ~params ~expected_code uri CL.Client.get fn
 
-  let post ?headers ?body ?token ~expected_code ~uri fn =
-    request_with_token_body ?headers ?token ?body ~expected_code uri CL.Client.post fn
+  let post ?headers ?body ?token ?(params=[]) ?(expected_code=`OK) ~uri fn =
+    request_with_token_body ?headers ?token ?body ~params ~expected_code uri CL.Client.post fn
 
   let delete ?headers ?token ?(params=[]) ?(expected_code=`No_content) ~uri fn =
     request_with_token ?headers ?token ~params ~expected_code uri CL.Client.delete fn
@@ -122,7 +125,7 @@ module User = struct
 end
 
 module OpenGraph = struct
-  let get ?token ?id ?namespace ~action ?(params=[]) () =
+  let post ?token ?id ?namespace ~action ?(params=[]) () =
     let uri = URI.opengraph ?id ?namespace ~action () in
-    API.get ?token ~uri ~params (wrap1 Facebook_j.og_object_of_string)
+    API.post ?token ~uri ~params (wrap1 Facebook_j.og_object_of_string)
 end
