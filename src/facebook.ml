@@ -118,9 +118,13 @@ module Token = struct
 end
 
 module User = struct
-  let get ?token ?id ?(fields=[]) () =
+  let get ?token ?id ?(fields=[]) ?(limit=0) () =
     let uri = URI.user ?id () in
-    let params = ["fields", String.concat "," fields] in
+    let params =
+      ["fields", String.concat "," fields]
+      @
+      (if limit <= 0 then [] else ["limit", string_of_int limit])
+    in
     API.get ?token ~uri ~params (wrap1 Facebook_j.user_of_string)
 end
 

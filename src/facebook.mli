@@ -51,7 +51,9 @@ end
 module User : sig
   val get:
     ?token:Token.t ->
-    ?id:string -> ?fields:string list ->
+    ?id:string ->
+    ?fields:string list ->
+    ?limit:int ->
     unit -> Facebook_t.user Monad.t
 end
 
