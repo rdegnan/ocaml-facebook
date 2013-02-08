@@ -135,7 +135,6 @@ module User = struct
     in
     API.get ?token ~uri ~params
       (wrap1 (fun x ->
-        Printf.printf "<><><><><><><> %s"x;
         let likes = (Facebook_j.like_data_of_string x).liked_data in
         match likes with None -> [] | Some l -> l))
 
