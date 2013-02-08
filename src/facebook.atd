@@ -22,6 +22,30 @@ type picture = {
   data: picture_data;
 }
 
+type cover = {
+  cover_id: string;
+  ?source: string option;
+  ?offset_y: int option;
+}
+
+type like = {
+  id: string;
+  ?name: string option;
+  ?description: string option;
+  ?category: string option;
+  ?link: string option;
+  ?website: string option;
+  ?talking_about_count: int option;
+  ?likes: int option;
+  ?created_time: string option;
+  ?cover: cover option;
+  ?can_post: bool option;
+} <ocaml field_prefix="like_">
+
+type like_data = {
+  ?data: like list option;
+} <ocaml field_prefix="liked_">
+
 type user = {
   id: string;
   ?name: string option;

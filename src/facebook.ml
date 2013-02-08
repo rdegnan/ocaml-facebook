@@ -11,8 +11,11 @@ module URI = struct
     let q = [ "client_id", client_id; "client_secret", client_secret; "grant_type", "client_credentials" ] in
     Uri.with_query' uri q
 
-  let user ?(id="me") () =
-    Uri.of_string (sprintf "https://graph.facebook.com/%s" id)
+  let user ?(id="me") ?items () =
+    Uri.of_string (match items with
+      | None -> sprintf "https://graph.facebook.com/%s" id
+      | Some items -> sprintf "https://graph.facebook.com/%s/%s" id items
+    )
 
   let opengraph ?(id="me") ?(namespace="og") ~action () =
     Uri.of_string (sprintf "https://graph.facebook.com/%s/%s:%s" id namespace action)
@@ -118,14 +121,24 @@ module Token = struct
 end
 
 module User = struct
-  let get ?token ?id ?(fields=[]) ?(limit=0) () =
+  let get ?token ?id ?(fields=[]) () =
     let uri = URI.user ?id () in
+    let params = ["fields", String.concat "," fields] in
+    API.get ?token ~uri ~params (wrap1 Facebook_j.user_of_string)
+
+  let likes ?token ?id ?(fields=[]) ?(limit=0) () =
+    let uri = URI.user ?id ~items:"likes" () in
     let params =
       ["fields", String.concat "," fields]
       @
       (if limit <= 0 then [] else ["limit", string_of_int limit])
     in
-    API.get ?token ~uri ~params (wrap1 Facebook_j.user_of_string)
+    API.get ?token ~uri ~params
+      (wrap1 (fun x ->
+        Printf.printf "<><><><><><><> %s"x;
+        let likes = (Facebook_j.like_data_of_string x).liked_data in
+        match likes with None -> [] | Some l -> l))
+
 end
 
 module OpenGraph = struct

@@ -11,6 +11,28 @@ type picture_data = { url: string; is_silhouette: bool }
 
 type picture = { data: picture_data }
 
+type cover = {
+  cover_id: string;
+  source: string option;
+  offset_y: int option
+}
+
+type like = {
+  like_id (*atd id *): string;
+  like_name (*atd name *): string option;
+  like_description (*atd description *): string option;
+  like_category (*atd category *): string option;
+  like_link (*atd link *): string option;
+  like_website (*atd website *): string option;
+  like_talking_about_count (*atd talking_about_count *): int option;
+  like_likes (*atd likes *): int option;
+  like_created_time (*atd created_time *): string option;
+  like_cover (*atd cover *): cover option;
+  like_can_post (*atd can_post *): bool option
+}
+
+type like_data = { liked_data (*atd data *): like list option }
+
 type user = {
   user_id (*atd id *): string;
   user_name (*atd name *): string option;

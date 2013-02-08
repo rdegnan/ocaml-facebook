@@ -53,8 +53,14 @@ module User : sig
     ?token:Token.t ->
     ?id:string ->
     ?fields:string list ->
-    ?limit:int ->
     unit -> Facebook_t.user Monad.t
+
+  val likes:
+    ?token:Token.t ->
+    ?id:string ->
+    ?fields:string list ->
+    ?limit:int ->
+    unit -> Facebook_t.like list Monad.t
 end
 
 module OpenGraph : sig
