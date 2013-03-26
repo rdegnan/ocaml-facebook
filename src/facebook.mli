@@ -61,6 +61,13 @@ module User : sig
     ?fields:string list ->
     ?limit:int ->
     unit -> Facebook_t.like list Monad.t
+
+  val friends:
+    ?token:Token.t ->
+    ?id:string ->
+    ?fields:string list ->
+    ?limit:int ->
+    unit -> Facebook_t.graph_object list Monad.t
 end
 
 module OpenGraph : sig

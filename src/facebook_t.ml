@@ -5,7 +5,7 @@ type api_error = { message: string; kind: string; code: int }
 
 type error = { error: api_error }
 
-type graph_object = { id: string; name: string }
+type graph_object = { id: string; name: string option }
 
 type picture_data = { url: string; is_silhouette: bool }
 
@@ -31,7 +31,9 @@ type like = {
   like_can_post (*atd can_post *): bool option
 }
 
-type like_data = { liked_data (*atd data *): like list option }
+type like_data = { liked_data (*atd data *): like list }
+
+type friend_data = { friend_data (*atd data *): graph_object list }
 
 type user = {
   user_id (*atd id *): string;

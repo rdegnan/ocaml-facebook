@@ -134,10 +134,17 @@ module User = struct
       (if limit <= 0 then [] else ["limit", string_of_int limit])
     in
     API.get ?token ~uri ~params
-      (wrap1 (fun x ->
-        let likes = (Facebook_j.like_data_of_string x).liked_data in
-        match likes with None -> [] | Some l -> l))
+      (wrap1 (fun x -> (Facebook_j.like_data_of_string x).liked_data))
 
+  let friends ?token ?id ?(fields=[]) ?(limit=0) () =
+    let uri = URI.user ?id ~items:"friends" () in
+    let params =
+      ["fields", String.concat "," fields]
+      @
+      (if limit <= 0 then [] else ["limit", string_of_int limit])
+    in
+    API.get ?token ~uri ~params
+      (wrap1 (fun x -> (Facebook_j.friend_data_of_string x).friend_data))
 end
 
 module OpenGraph = struct

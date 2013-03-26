@@ -10,7 +10,7 @@ type error = {
 
 type graph_object = {
   id: string;
-  name: string;
+  ?name: string option;
 }
 
 type picture_data = {
@@ -29,8 +29,7 @@ type cover = {
 }
 
 type like = {
-  id: string;
-  ?name: string option;
+  inherit graph_object;
   ?description: string option;
   ?category: string option;
   ?link: string option;
@@ -43,12 +42,15 @@ type like = {
 } <ocaml field_prefix="like_">
 
 type like_data = {
-  ?data: like list option;
+  ~data: like list;
 } <ocaml field_prefix="liked_">
 
+type friend_data = {
+  ~data: graph_object list;
+} <ocaml field_prefix="friend_">
+
 type user = {
-  id: string;
-  ?name: string option;
+  inherit graph_object;
   ?first_name: string option;
   ?middle_name: string option;
   ?last_name: string option;

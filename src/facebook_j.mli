@@ -9,7 +9,10 @@ type api_error = Facebook_t.api_error = {
 
 type error = Facebook_t.error = { error: api_error }
 
-type graph_object = Facebook_t.graph_object = { id: string; name: string }
+type graph_object = Facebook_t.graph_object = {
+  id: string;
+  name: string option
+}
 
 type picture_data = Facebook_t.picture_data = {
   url: string;
@@ -39,7 +42,11 @@ type like = Facebook_t.like = {
 }
 
 type like_data = Facebook_t.like_data = {
-  liked_data (*atd data *): like list option
+  liked_data (*atd data *): like list
+}
+
+type friend_data = Facebook_t.friend_data = {
+  friend_data (*atd data *): graph_object list
 }
 
 type user = Facebook_t.user = {
@@ -230,6 +237,26 @@ val read_like_data :
 val like_data_of_string :
   string -> like_data
   (** Deserialize JSON data of type {!like_data}. *)
+
+val write_friend_data :
+  Bi_outbuf.t -> friend_data -> unit
+  (** Output a JSON value of type {!friend_data}. *)
+
+val string_of_friend_data :
+  ?len:int -> friend_data -> string
+  (** Serialize a value of type {!friend_data}
+      into a JSON string.
+      @param len specifies the initial length
+                 of the buffer used internally.
+                 Default: 1024. *)
+
+val read_friend_data :
+  Yojson.Safe.lexer_state -> Lexing.lexbuf -> friend_data
+  (** Input JSON data of type {!friend_data}. *)
+
+val friend_data_of_string :
+  string -> friend_data
+  (** Deserialize JSON data of type {!friend_data}. *)
 
 val write_user :
   Bi_outbuf.t -> user -> unit
